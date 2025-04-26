@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pydatadog-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: pydatadog-api
+  template:
+    metadata:
+      labels:
+        app: pydatadog-api
+    spec:
+      containers:
+      - name: pydatadog-api
+        image: pydatadog-api:latest
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pydatadog-api-service
+spec:
+  selector:
+    app: pydatadog-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
